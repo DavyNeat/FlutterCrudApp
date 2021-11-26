@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_crud_app/Services/database.dart';
 import 'package:flutter_crud_app/Services/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,8 +31,31 @@ class Auth{
   }
 
   //login
+  Future loginWithEmailAndPassword(String email, String pass) async {
+    try{
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: pass);
+      User? user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   //register
+  Future registerWithEmailAndPassword(String email, String pass, String name, String address, String gender) async {
+
+    try{
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: pass);
+      User? user = result.user;
+      await DatabaseService(uid: user!.uid).updateUserData(name, address, gender, email);
+      return _userFromFirebaseUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+
+  }
 
   //logout
   Future signOut() async{

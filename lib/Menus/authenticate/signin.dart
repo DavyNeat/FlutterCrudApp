@@ -6,7 +6,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_crud_app/Services/auth.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+
+  final Function toggleView;
+  SignIn(Function toggleView): this.toggleView = toggleView;
 
   @override
   _SignInState createState() => _SignInState();
@@ -15,8 +17,10 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
 
   final Auth _auth = Auth();
+  final _formkey = GlobalKey<FormState>();
   String pass = '';
   String email = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,7 @@ class _SignInState extends State<SignIn> {
       ),
       body: Center(
         child: Form(
+          key: _formkey,
           child: ListView(
             padding: const EdgeInsets.symmetric(
                 vertical: 50.0
@@ -35,6 +40,7 @@ class _SignInState extends State<SignIn> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                  validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                   onChanged: (val){
                     setState(() {
                       email = val;
@@ -50,6 +56,7 @@ class _SignInState extends State<SignIn> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                    validator: (val) => val!.isEmpty ? 'Enter a password' : null ,
                     onChanged: (val){
                       setState(() {
                         pass = val;
@@ -64,16 +71,30 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               ElevatedButton(
-                  onPressed: () async{
-                    dynamic result = await _auth.signInAnon();
-
-                    print(email);
-                    print(pass);
-
-                  },
+                onPressed: () async{
+                  if(_formkey.currentState!.validate()){
+                    dynamic result = await _auth.loginWithEmailAndPassword(email, pass);
+                    if(result == null){
+                      setState(() {
+                        error = 'please supply a valid email and password';
+                      });
+                    }
+                  }
+                },
                   child: Text('Sign In')),
               const SizedBox(
                   height: 25.0
+              ),
+              Text(
+                error,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.red,
+                    fontSize: 14.0
+                ),
+              ),
+              const SizedBox(
+                  height: 5.0
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -87,12 +108,14 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   RichText(
-                      text: TextSpan(
-                          text: 'Sign Up!',
-                          style: new TextStyle( color: Colors.blue ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {print('test135');}
-                      )
+                    text: TextSpan(
+                      text: 'Sign Up!',
+                      style: new TextStyle( color: Colors.blue ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          widget.toggleView();
+                        }
+                    )
                   )
                 ],
               ),

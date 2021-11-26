@@ -10,7 +10,7 @@ class PhoneFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      child: Text('Add entries'),
+      child: Text('Add phone entries'),
       onPressed: () async {
         List<String> persons = await Navigator.push(
           context,
@@ -30,8 +30,18 @@ class SOF extends StatefulWidget {
 }
 
 class _SOFState extends State<SOF> {
+
+  final Auth _auth = Auth();
+  final _formkey = GlobalKey<FormState>();
+
   var phoneTECs = <TextEditingController>[];
   var cards = <Card>[];
+
+  bool isPhoneNoValid(String? phoneNo) {
+    if (phoneNo == null) return true;
+    final regExp = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');
+    return regExp.hasMatch(phoneNo);
+  }
 
   Card createCard() {
     var phoneController = TextEditingController();
@@ -41,9 +51,10 @@ class _SOFState extends State<SOF> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text('phone ${cards.length + 1}'),
-          TextField(
-              controller: phoneController,
-              decoration: InputDecoration(labelText: 'Phone Number')),
+            TextFormField(
+            validator: (val) => isPhoneNoValid(val) ? 'Enter a valid phone number' : null ,
+            controller: phoneController,
+            decoration: InputDecoration(labelText: 'Phone Number')),
         ],
       ),
     );
@@ -71,23 +82,27 @@ class _SOFState extends State<SOF> {
         children: <Widget>[
           Expanded(
             child: ListView.builder(
-              itemCount: cards.length,
-              itemBuilder: (BuildContext context, int index) {
-                return cards[index];
-              },
+                itemCount: cards.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return cards[index];
+                },
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              child: Text('add new'),
-              onPressed: () => setState(() => cards.add(createCard())),
-            ),
-          )
-        ],
-      ),
-      floatingActionButton:
-      FloatingActionButton(child: Icon(Icons.done), onPressed: _onDone),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                child: Text('add new'),
+                onPressed: () => setState(() => cards.add(createCard())),
+              ),
+            )
+          ],
+        ),
+        floatingActionButton:
+        FloatingActionButton(child: Icon(Icons.done),
+          onPressed: () async{
+            _onDone();
+          },
+        ),
     );
   }
 }

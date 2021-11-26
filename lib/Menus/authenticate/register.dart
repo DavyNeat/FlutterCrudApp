@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_crud_app/Services/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_crud_app/Services/auth.dart';
@@ -8,24 +9,26 @@ import 'package:flutter_crud_app/Menus/authenticate/phonefields.dart';
 
 
 class register extends StatefulWidget {
-  const register({Key? key}) : super(key: key);
+
+  final Function toggleView;
+  register(Function toggleView): this.toggleView = toggleView;
 
   @override
   _registerState createState() => _registerState();
 }
-enum Genders { Man, Woman, Other }
 
 class _registerState extends State<register> {
 
-  Genders? _gender = Genders.Man;
-
   final Auth _auth = Auth();
+  final _formkey = GlobalKey<FormState>();
+
+  Genders? _gender = Genders.Other;
   String pass = '';
   String email = '';
   String phone = '';
   String name = '';
   String address = '';
-
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,7 @@ class _registerState extends State<register> {
       ),
       body: Center(
         child: Form(
+          key: _formkey,
           child: ListView(
             padding: const EdgeInsets.symmetric(
                 vertical: 50.0
@@ -44,6 +48,7 @@ class _registerState extends State<register> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                  validator: (val) => val!.isEmpty ? 'Enter an email' : null ,
                   onChanged: (val){
                     setState(() {
                       email = val;
@@ -59,6 +64,7 @@ class _registerState extends State<register> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                    validator: (val) => val!.isEmpty ? 'Enter a password' : null ,
                     onChanged: (val){
                       setState(() {
                         pass = val;
@@ -75,12 +81,12 @@ class _registerState extends State<register> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                    validator: (val) => val!.isEmpty ? 'Enter a name' : null ,
                     onChanged: (val){
                       setState(() {
                         name = val;
                       });
                     },
-                    obscureText: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Name',
@@ -91,12 +97,12 @@ class _registerState extends State<register> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                    validator: (val) => val!.isEmpty ? 'Enter an address' : null ,
                     onChanged: (val){
                       setState(() {
                         address = val;
                       });
                     },
-                    obscureText: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Address',
@@ -147,26 +153,47 @@ class _registerState extends State<register> {
                   ],
                 )
               ),
-              PhoneFields(),
               ElevatedButton(
-                  onPressed: () async{
-                    dynamic result = await _auth.signInAnon();
-
-                    print(email);
-                    print(pass);
-
-                  },
-                  child: Text('Sign In')),
+                onPressed: () async{
+                  if (_formkey.currentState!.validate()){
+                    String strGender = MyUser().genderToString(_gender);
+                    dynamic result = await _auth.registerWithEmailAndPassword(email, pass, name, address, strGender);
+                    if(result == null){
+                      setState(() {
+                        error = 'please supply a valid email';
+                      });
+                    }
+                  }
+                },
+                child: Text('Register')),
               const SizedBox(
                   height: 25.0
               ),
-              RichText(
-                  text: TextSpan(
-                      text: 'Sign in Instead',
-                      style: new TextStyle( color: Colors.blue ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {print('test135');}
+              Text(
+                error,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 14.0
+                ),
+              ),
+              const SizedBox(
+                  height: 5.0
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  RichText(
+                      text: TextSpan(
+                          text: 'Sign In!',
+                          style: new TextStyle( color: Colors.blue ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              widget.toggleView();
+                            }
+                      )
                   )
+                ],
               ),
             ],
           ),
