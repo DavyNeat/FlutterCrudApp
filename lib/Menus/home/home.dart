@@ -40,7 +40,6 @@ class _HomeState extends State<Home> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData userData = snapshot.data!;
-            //_gender = MyUser().stringToGender(userData.gender);
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
@@ -160,25 +159,22 @@ class _HomeState extends State<Home> {
                       children: [
                         PhoneFields(),
                         ElevatedButton(
-                            onPressed: () async {
-                              if (_formkey.currentState!.validate()){
-                                String strGender = MyUser().genderToString(_gender);
-                                print(name);
-                                print(email);
-                                print(address);
-                                dynamic result = await DatabaseService(uid: user.uid!).updateUserData(
-                                    name ?? userData.name,
-                                    address ?? userData.address,
-                                    strGender,
-                                    email ?? userData.email);
-                                if(result == null){
-                                  setState(() {
-                                    error = 'please supply a valid email';
-                                  });
-                                }
+                          onPressed: () async {
+                            if (_formkey.currentState!.validate()){
+                              String strGender = MyUser().genderToString(_gender);
+                              dynamic result = await DatabaseService(uid: user.uid!).updateUserData(
+                                  name ?? userData.name,
+                                  address ?? userData.address,
+                                  strGender,
+                                  email ?? userData.email);
+                              if(result == null){
+                                setState(() {
+                                  error = 'please supply a valid email';
+                                });
                               }
-                            },
-                            child: Text('Update Information'))
+                            }
+                          },
+                          child: Text('Update Information'))
                       ],
                     ),
                     ElevatedButton(

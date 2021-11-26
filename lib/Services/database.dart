@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_crud_app/Menus/authenticate/authenticate.dart';
+import 'package:flutter_crud_app/Menus/authenticate/register.dart';
 import 'package:flutter_crud_app/Services/user.dart';
 import 'package:flutter_crud_app/Services/auth.dart';
 import 'package:provider/provider.dart';
@@ -17,15 +18,28 @@ class DatabaseService{
 
   final CollectionReference nameCollection = FirebaseFirestore.instance.collection("UserInfo");
 
-  Future updateUserData (String name, String address, String gender, String email)async{
-
+  Future registerUserData (String name, String address, String gender, String email)async{
     return nameCollection.doc(uid).set({
       'name': name,
       'address': address,
       'gender': gender,
       'email': email
     });
+  }
 
+  Future updateUserData (String name, String address, String gender, String email)async{
+    return nameCollection.doc(uid).update({
+      'name': name,
+      'address': address,
+      'gender': gender,
+      'email': email
+    });
+  }
+
+  Future updateUserPhone (List<String> phones) async{
+    return nameCollection.doc(uid).update({
+      'phones': phones
+    });
   }
 
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot){
@@ -38,8 +52,16 @@ class DatabaseService{
     );
   }
 
+  List<String> _userPhonesFromSnapshot(DocumentSnapshot snapshot){
+    return snapshot['phones'] ?? [''];
+  }
+
   Stream<UserData> get userData {
     return nameCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  }
+
+  Future<DocumentSnapshot> get userPhones{
+    return nameCollection.doc(uid).get();
   }
 
 

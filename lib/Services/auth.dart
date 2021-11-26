@@ -35,6 +35,8 @@ class Auth{
     try{
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: pass);
       User? user = result.user;
+      print('logging in');
+      print(user!.uid);
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());
@@ -48,7 +50,7 @@ class Auth{
     try{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: pass);
       User? user = result.user;
-      await DatabaseService(uid: user!.uid).updateUserData(name, address, gender, email);
+      await DatabaseService(uid: user!.uid).registerUserData(name, address, gender, email);
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());
@@ -59,6 +61,7 @@ class Auth{
 
   //logout
   Future signOut() async{
+    print('signing out');
     try {
       return await _auth.signOut();
     } catch(e){

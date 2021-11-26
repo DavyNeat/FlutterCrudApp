@@ -166,8 +166,8 @@ class _registerState extends State<register> {
                   }
                 },
                 child: Text('Register')),
-              const SizedBox(
-                  height: 25.0
+                const SizedBox(
+                height: 25.0
               ),
               Text(
                 error,
@@ -178,20 +178,20 @@ class _registerState extends State<register> {
                 ),
               ),
               const SizedBox(
-                  height: 5.0
+                height: 5.0
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   RichText(
-                      text: TextSpan(
-                          text: 'Sign In!',
-                          style: new TextStyle( color: Colors.blue ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              widget.toggleView();
-                            }
-                      )
+                    text: TextSpan(
+                      text: 'Sign In!',
+                      style: new TextStyle( color: Colors.blue ),
+                      recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        widget.toggleView();
+                      }
+                    )
                   )
                 ],
               ),

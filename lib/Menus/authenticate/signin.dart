@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_crud_app/Services/auth.dart';
+import 'package:flutter_crud_app/Menus/authenticate/resetpass.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -104,7 +105,9 @@ class _SignInState extends State<SignIn> {
                         text: 'Forgot Password?',
                         style: new TextStyle( color: Colors.blue ),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () {print('test246');}
+                          ..onTap = () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ResetPassword()));
+                        }
                     ),
                   ),
                   RichText(
