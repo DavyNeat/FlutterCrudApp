@@ -23,7 +23,8 @@ class DatabaseService{
       'name': name,
       'address': address,
       'gender': gender,
-      'email': email
+      'email': email,
+      'phones': ['']
     });
   }
 

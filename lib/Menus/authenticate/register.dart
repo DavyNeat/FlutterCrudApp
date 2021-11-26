@@ -48,7 +48,7 @@ class _registerState extends State<register> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
-                  validator: (val) => val!.isEmpty ? 'Enter an email' : null ,
+                  validator: (val) => val!.isEmpty ? 'Enter a valid email' : null ,
                   onChanged: (val){
                     setState(() {
                       email = val;
@@ -64,7 +64,7 @@ class _registerState extends State<register> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
-                    validator: (val) => val!.isEmpty ? 'Enter a password' : null ,
+                    validator: (val) => val!.length > 6 ? 'Enter a valid password (>6 chars)' : null ,
                     onChanged: (val){
                       setState(() {
                         pass = val;
@@ -160,7 +160,7 @@ class _registerState extends State<register> {
                     dynamic result = await _auth.registerWithEmailAndPassword(email, pass, name, address, strGender);
                     if(result == null){
                       setState(() {
-                        error = 'please supply a valid email';
+                        error = 'please supply a valid email and password';
                       });
                     }
                   }
