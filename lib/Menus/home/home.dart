@@ -1,16 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_crud_app/Services/database.dart';
 import 'package:flutter_crud_app/Services/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_crud_app/Services/auth.dart';
 import 'package:flutter_crud_app/Menus/authenticate/phonefields.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_crud_app/Services/loader.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
