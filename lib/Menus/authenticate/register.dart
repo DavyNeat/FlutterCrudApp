@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_crud_app/Services/user.dart';
 import 'package:flutter_crud_app/Services/auth.dart';
 
-
+// Register class/widget to display the registration screen
 class register extends StatefulWidget {
 
   final Function toggleView;
@@ -18,7 +18,7 @@ class _registerState extends State<register> {
 
   final Auth _auth = Auth();
   final _formkey = GlobalKey<FormState>();
-
+  //variables to be updated and displayed via registration screen
   Genders? _gender = Genders.Other;
   String pass = '';
   String email = '';
@@ -26,7 +26,7 @@ class _registerState extends State<register> {
   String name = '';
   String address = '';
   String error = '';
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +61,7 @@ class _registerState extends State<register> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
-                    validator: (val) => val!.length > 6 ? 'Enter a valid password (>6 chars)' : null ,
+                    validator: (val) => val!.length < 6 ? 'Enter a valid password (>6 chars)' : null ,
                     onChanged: (val){
                       setState(() {
                         pass = val;
