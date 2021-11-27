@@ -9,12 +9,14 @@ import 'package:flutter/gestures.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+// Main function used to call the main widget
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
 
+// First widget to be called, creates the Stream provider to call the uid in other widgets
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
+// Wrapper widget to decide between the user home screen and the authenticate screens
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
 
@@ -38,17 +40,12 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final user = Provider.of<MyUser?>(context);
-    print('userid');
-    print(user?.uid);
+
+    // returns the authenticate screens if there is no user, otherwise shows the home screen
     if (user?.uid == null){
-      print('InAuthenticate');
       return Authenticate();
     } else {
-      print('inhome');
       return Home();
     }
-
-    //Return either home or auth
-
   }
 }

@@ -2,31 +2,21 @@ import 'package:flutter_crud_app/Services/database.dart';
 import 'package:flutter_crud_app/Services/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// Auth class that is used to communicate with the Firebase Auth
 class Auth{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  // Returns user data according to the uid
   MyUser? _userFromFirebaseUser(User? user){
     return (user != null) ? MyUser(uid: user.uid) : null;
   }
 
-  //login anon
-  Future signInAnon() async {
-    try{
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-      return user;
-    }catch(e){
-      return null;
-    }
-  }
-
-  //change user stream
+  // Returns the state of the current user, whether or not a user is logged in
   Stream<MyUser?> get user{
     return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
-  //login
+  // Logs the user in given their email and password
   Future loginWithEmailAndPassword(String email, String pass) async {
     try{
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: pass);
@@ -40,7 +30,7 @@ class Auth{
     }
   }
 
-  //register
+  // Registers a new user account given user data
   Future registerWithEmailAndPassword(String email, String pass, String name, String address, String gender) async {
 
     try{
@@ -55,7 +45,7 @@ class Auth{
 
   }
 
-  //logout
+  // Signs the current user out
   Future signOut() async{
     print('signing out');
     try {

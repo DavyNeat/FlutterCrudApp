@@ -6,7 +6,7 @@ import 'package:flutter_crud_app/Services/auth.dart';
 import 'package:flutter_crud_app/Menus/authenticate/phonefields.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_crud_app/Services/loader.dart';
-
+// Home class/widget to display the user's home screen after they have logged in
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -18,21 +18,24 @@ class _HomeState extends State<Home> {
 
   final Auth _auth = Auth();
   final _formkey = GlobalKey<FormState>();
-
-   Genders? _gender;
-   String? email;
-   String? phone;
-   String? name;
-   String? address;
-   String? error;
-   String? strGender;
+  // variables to be updated and viewed in the home screen
+  Genders? _gender;
+  String? email;
+  String? phone;
+  String? name;
+  String? address;
+  String? error;
+  String? strGender;
 
   @override
   Widget build(BuildContext context) {
+    // Provider used to get the uid
     final user = Provider.of<MyUser?>(context);
+    // Stream builder used to get the current user data
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user!.uid!).userData,
         builder: (context, snapshot) {
+          // Displays the home screen when the data has been loaded
           if (snapshot.hasData) {
             UserData userData = snapshot.data!;
             return Scaffold(
@@ -40,6 +43,7 @@ class _HomeState extends State<Home> {
                 centerTitle: true,
                 title: Text('CRUD'),
               ),
+              // Form used to validate text in the home screen
               body: Form(
                 key: _formkey,
                 child: ListView(
@@ -47,6 +51,7 @@ class _HomeState extends State<Home> {
                       vertical: 50.0
                   ),
                   children: [
+                    // Text field for the user's email
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -59,6 +64,8 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
+                    // Text field for the user's password
+                    // Always invisible to the user
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -72,6 +79,7 @@ class _HomeState extends State<Home> {
                         )
                       ),
                     ),
+                    // Input text field where user can view and update their name
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -89,6 +97,7 @@ class _HomeState extends State<Home> {
                           )
                       ),
                     ),
+                    // Input text field where user can view and update their address
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -106,6 +115,7 @@ class _HomeState extends State<Home> {
                           )
                       ),
                     ),
+                    // editable radio buttons where user can update their gender
                     Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Column(
@@ -152,7 +162,9 @@ class _HomeState extends State<Home> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        // Displays button the redirects to the phones list screen
                         PhoneFields(),
+                        // Displays button that updates the user data from their home screen
                         ElevatedButton(
                           onPressed: () async {
                             if (_formkey.currentState!.validate()){
@@ -172,6 +184,7 @@ class _HomeState extends State<Home> {
                           child: Text('Update Information'))
                       ],
                     ),
+                    // Button used to sign the user out
                     ElevatedButton(
                         onPressed: () async {
                           await _auth.signOut();
@@ -182,6 +195,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             );
+          // Displays a loading circle while the data is not yet loaded
           } else {
             return Loader();
           }

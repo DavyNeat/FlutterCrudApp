@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// ResetPassword class/widget to display the reset password screen
 class ResetPassword extends StatelessWidget {
 
   TextEditingController controller = TextEditingController();
@@ -15,9 +16,11 @@ class ResetPassword extends StatelessWidget {
       body: Container(
         child: Column(
           children: [
+            // Sizedbox to create empty space
             SizedBox(
               height: 25.0,
             ),
+            // Input textfield for target account email
             Padding(
               padding: EdgeInsets.all(8.0),
               child: TextField(
@@ -29,10 +32,14 @@ class ResetPassword extends StatelessWidget {
                 ),
               ),
             ),
+            // Button to initiate password reset
             ElevatedButton(
               onPressed: (){
+                //sends password reset request
                 FirebaseAuth.instance.sendPasswordResetEmail(email: controller.text);
+                //resets text field
                 controller.text = '';
+                // Dialog box to notify the user that a password request has been sent if the email exists
                 AlertDialog dialog = AlertDialog(
                   title: Text('Reset Sent'),
                   content: Text('A password reset has been sent to the given email, if one exists.'),

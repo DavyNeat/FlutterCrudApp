@@ -18,6 +18,7 @@ class _registerState extends State<register> {
 
   final Auth _auth = Auth();
   final _formkey = GlobalKey<FormState>();
+
   //variables to be updated and displayed via registration screen
   Genders? _gender = Genders.Other;
   String pass = '';
@@ -26,7 +27,7 @@ class _registerState extends State<register> {
   String name = '';
   String address = '';
   String error = '';
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +43,7 @@ class _registerState extends State<register> {
                 vertical: 50.0
             ),
             children: [
+              // Email textfield
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -58,6 +60,7 @@ class _registerState extends State<register> {
                   ),
                 ),
               ),
+              // Password textfield
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -75,6 +78,7 @@ class _registerState extends State<register> {
                     )
                 ),
               ),
+              // Name textfield
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -91,6 +95,7 @@ class _registerState extends State<register> {
                     )
                 ),
               ),
+              // address textfield
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -107,6 +112,7 @@ class _registerState extends State<register> {
                     )
                 ),
               ),
+              // Gender radio buttons
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Column(
@@ -150,6 +156,7 @@ class _registerState extends State<register> {
                   ],
                 )
               ),
+              // button to register account
               ElevatedButton(
                 onPressed: () async{
                   if (_formkey.currentState!.validate()){
@@ -166,6 +173,7 @@ class _registerState extends State<register> {
                 const SizedBox(
                 height: 25.0
               ),
+              // Error text
               Text(
                 error,
                 textAlign: TextAlign.center,
@@ -177,6 +185,7 @@ class _registerState extends State<register> {
               const SizedBox(
                 height: 5.0
               ),
+              // button used to go back to sign in screen
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

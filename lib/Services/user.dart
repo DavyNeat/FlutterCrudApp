@@ -1,11 +1,13 @@
-
+// enum of genders to use on the radio buttons
 enum Genders { Man, Woman, Other }
 
+// User Class/Widget used to store the userid
 class MyUser {
 
   final String? uid;
   MyUser({this.uid});
 
+  // Converts the gender enum value to a string
   String genderToString(Genders? gender){
     if (gender == Genders.Man){
       return 'Man';
@@ -16,6 +18,7 @@ class MyUser {
     }
   }
 
+  // Converts a given string to the gender enum value
   Genders stringToGender(String? gender){
     if (gender == 'Man'){
       return Genders.Man;
@@ -27,6 +30,7 @@ class MyUser {
   }
 }
 
+// User Class/Widget used to store all user data
 class UserData{
 
   String uid;
@@ -36,5 +40,4 @@ class UserData{
   String email;
 
   UserData({required this.uid, required this.name, required this.address, required this.gender, required this.email});
-
 }
